@@ -34,3 +34,9 @@ type GetListProduct struct {
 	Count    int       `json:"count"`
 	Products []Product `json:"products"`
 }
+
+type GetListProductRequest struct {
+	Offset     int    `json:"offset"`
+	Limit      int    `json:"limit"`
+	CategoryID string `json:"category_id"`
+}

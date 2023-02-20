@@ -122,13 +122,49 @@ func (p *productRepo) GetByID(req *models.ProductPrimaryKey) (models.ProductWith
 	return models.ProductWithCategory{}, errors.New("There is no product with this id")
 }
 
-func (p *productRepo) GetAll() (models.GetListProduct, error) {
-	products, err := p.Read()
-	if err != nil {
-		return models.GetListProduct{}, err
+func (p *productRepo) GetAll(req *models.GetListProductRequest) (models.GetListProduct, error) {
+
+	var (
+		products = []models.Product{}
+		err      error
+	)
+
+	if req.CategoryID != "" {
+		productsWithCategory, err := p.ReadWithCategory()
+		if err != nil {
+			return models.GetListProduct{}, err
+		}
+
+		for _, product := range productsWithCategory {
+			if product.CategoryID == req.CategoryID {
+				products = append(products, models.Product{
+					Id:    product.Id,
+					Name:  product.Name,
+					Price: product.Price,
+				})
+			}
+		}
+	} else {
+		products, err = p.Read()
+		if err != nil {
+			return models.GetListProduct{}, err
+		}
 	}
+
+	if req.Limit+req.Offset > len(products) {
+
+		if req.Offset > len(products) {
+			return models.GetListProduct{}, nil
+		}
+
+		return models.GetListProduct{
+			Products: products[req.Offset:],
+			Count:    len(products),
+		}, nil
+	}
+
 	return models.GetListProduct{
-		Products: products,
+		Products: products[req.Offset : req.Limit+req.Offset],
 		Count:    len(products),
 	}, nil
 }

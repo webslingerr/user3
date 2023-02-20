@@ -20,27 +20,40 @@ func main() {
 
 	c := controller.NewController(&cfg, jsonDb)
 
+	Product(c)
+}
+
+func Product(c *controller.Controller) {
+
 	// c.CreateProduct(&models.CreateProduct{
 	// 	Name:       "Smartfon vivo V25 8/256 GB",
 	// 	Price:      4_860_000,
 	// 	CategoryID: "6325b81f-9a2b-48ef-8d38-5cef642fed6b",
 	// })
 
-	product, err := c.GetByIdProduct(&models.ProductPrimaryKey{Id: "38292285-4c27-497b-bc5f-dfe418a9f959"})
+	// product, err := c.GetByIdProduct(&models.ProductPrimaryKey{Id: "38292285-4c27-497b-bc5f-dfe418a9f959"})
+
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+
+	products, err := c.GetAllProduct(
+		&models.GetListProductRequest{
+			Offset:     0,
+			Limit:      1,
+			CategoryID: "6325b81f-9a2b-48ef-8d38-5cef642fed6b",
+		},
+	)
 
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	// c.GetAllProduct(
-	// 	offset:
-	// 	limit:
-	// 	categoryid: "38292285-4c27-497b-bc5f-dfe418a9f959"
-	// )
-
-	fmt.Printf("%+v\n", product)
-
+	for in, product := range products.Products {
+		fmt.Println(in+1, product)
+	}
 }
 
 func Category(c *controller.Controller) {

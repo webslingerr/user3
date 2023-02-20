@@ -42,8 +42,8 @@ func (u *userRepo) Create(req *models.CreateUser) (string, error) {
 
 	uuid := uuid.New().String()
 	users = append(users, models.User{
-		Id: uuid,
-		Name: req.Name,
+		Id:      uuid,
+		Name:    req.Name,
 		Surname: req.Surname,
 		Balance: req.Balance,
 	})
@@ -117,7 +117,7 @@ func (u *userRepo) Update(req *models.UpdateUser, userId string) error {
 
 	err = ioutil.WriteFile(u.fileName, body, os.ModePerm)
 	if err != nil {
-		return err	
+		return err
 	}
 	return nil
 }
@@ -143,12 +143,12 @@ func (u *userRepo) GetAll(req *models.GetListRequest) (models.GetListResponse, e
 		return models.GetListResponse{}, err
 	}
 
-	if req.Limit + req.Offset > len(users) {
+	if req.Limit+req.Offset > len(users) {
 		return models.GetListResponse{}, errors.New("out of range")
 	}
-	
+
 	fUsers := []models.User{}
-	for i:=req.Offset; i<req.Offset+req.Limit; i++ {
+	for i := req.Offset; i < req.Offset+req.Limit; i++ {
 		fUsers = append(fUsers, users[i])
 	}
 	return models.GetListResponse{
