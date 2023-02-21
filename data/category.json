@@ -10,5 +10,11 @@
   "name": "Smartfonlar va telefonlar",
   "parent_id": "eed2e676-1f17-429f-b75c-899eda296e65",
   "sub_categories": null
+ },
+ {
+  "id": "caf84791-3f99-42dd-8121-66ff7ce5ec31",
+  "name": "Kiyimlar",
+  "parent_id": "",
+  "sub_categories": null
  }
 ]

@@ -20,7 +20,7 @@ func main() {
 
 	c := controller.NewController(&cfg, jsonDb)
 
-	Product(c)
+	c.Statistics()
 }
 
 func Product(c *controller.Controller) {
@@ -38,22 +38,11 @@ func Product(c *controller.Controller) {
 	// 	return
 	// }
 
-	products, err := c.GetAllProduct(
-		&models.GetListProductRequest{
-			Offset:     0,
-			Limit:      1,
-			CategoryID: "6325b81f-9a2b-48ef-8d38-5cef642fed6b",
-		},
-	)
-
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	for in, product := range products.Products {
-		fmt.Println(in+1, product)
-	}
+	c.CreateProduct(&models.CreateProduct{
+		Name: "Rubashka",
+		Price: 48000,
+		CategoryID: "caf84791-3f99-42dd-8121-66ff7ce5ec31",
+	})
 }
 
 func Category(c *controller.Controller) {

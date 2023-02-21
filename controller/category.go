@@ -1,6 +1,10 @@
 package controller
 
-import "app/models"
+import (
+	"app/models"
+	"fmt"
+	"log"
+)
 
 func (c *Controller) CreateCategory(req *models.CreateCategory) (string, error) {
 	id, err := c.store.Category().Create(req)
@@ -40,4 +44,24 @@ func (c *Controller) GetAllCategory(req *models.GetListCategoryRequest) (models.
 		return models.GetListCategoryResponse{}, err
 	}
 	return categories, nil
+}
+
+func (c *Controller) Statistics() {
+	m := map[string]int{}
+	products, err := c.store.Product().GetAllProductWithCategory()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	for _, v := range products {
+		category, err := c.store.Category().GetByID(&models.CategoryPrimaryKey{Id: v.CategoryID})
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		m[category.Name]++
+	}
+	for k, v := range m {
+		fmt.Printf("%v: %v\n", k, v)
+	}
 }

@@ -183,6 +183,14 @@ func (p *productRepo) Read() ([]models.Product, error) {
 	return products, nil
 }
 
+func (p *productRepo) GetAllProductWithCategory() ([]models.ProductWithCategory, error) {
+	products, err := p.ReadWithCategory()
+	if err != nil {
+		return []models.ProductWithCategory{}, err
+	}
+	return products, nil
+}
+
 func (p *productRepo) ReadWithCategory() ([]models.ProductWithCategory, error) {
 	data, err := ioutil.ReadFile(p.fileName)
 	if err != nil {

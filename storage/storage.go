@@ -25,6 +25,7 @@ type ProductRepoI interface {
 	Create(*models.CreateProduct) (string, error)
 	GetByID(*models.ProductPrimaryKey) (models.ProductWithCategory, error)
 	GetAll(*models.GetListProductRequest) (models.GetListProduct, error)
+	GetAllProductWithCategory() ([]models.ProductWithCategory, error)
 	Update(*models.UpdateProduct, string) error
 	Delete(*models.ProductPrimaryKey) error
 }
